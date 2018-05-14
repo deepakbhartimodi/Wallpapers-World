@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "231986072981",
+    "firebase_url": "https://wallpaper-app-d2cc1.firebaseio.com",
+    "project_id": "wallpaper-app-d2cc1",
+    "storage_bucket": "wallpaper-app-d2cc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:231986072981:android:b3aef4105e75d0ce",
+        "android_client_info": {
+          "package_name": "app.deepakbharti.com.wallpapersworld"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "231986072981-61mflv8v7mvuagd787fes00cj0o01cn0.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "app.deepakbharti.com.wallpapersworld",
+            "certificate_hash": "4b701f9eccc80fa35a524f55f485004b4e453fe3"
+          }
+        },
+        {
+          "client_id": "231986072981-iftn300m4sd0t3ii6ssagccupgg7jcne.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA1UmrydlxzkGuziTvfsy6hJCRRBXwpl3g"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "231986072981-iftn300m4sd0t3ii6ssagccupgg7jcne.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
