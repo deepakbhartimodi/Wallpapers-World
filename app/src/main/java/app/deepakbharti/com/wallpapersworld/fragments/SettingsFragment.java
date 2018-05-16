@@ -106,7 +106,7 @@ public class SettingsFragment extends Fragment {
                     .child("settings")
                     .child("change_wall_daily");
 
-            dbChangeWall.addListenerForSingleValueEvent(new ValueEventListener() {
+            dbChangeWall.addValueEventListener(new ValueEventListener() {
                 @Override
                 public void onDataChange(DataSnapshot dataSnapshot) {
                     if(dataSnapshot.exists()){
@@ -129,6 +129,8 @@ public class SettingsFragment extends Fragment {
 
                 @Override
                 public void onClick(View view) {
+                    Button btn = view.findViewById(R.id.start_change_wall);
+                    btn.setEnabled(false);
                     if(changeWall.equals("No")){
                         dbChangeWall.setValue("Yes");
                         getActivity().startService(new Intent(getActivity(), SensorService.class));
@@ -142,7 +144,6 @@ public class SettingsFragment extends Fragment {
                         // Start service every hour
                         alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
                                 216000*1000, pintent);
-                        Button btn = view.findViewById(R.id.start_change_wall);
                         btn.setText("Yes");
                         //startChangeWall.setText("Yes");
                     }else{
@@ -155,10 +156,10 @@ public class SettingsFragment extends Fragment {
                         AlarmManager alarm = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
                         alarm.cancel(pintent);
                         dbChangeWall.setValue("No");
-                        Button btn = view.findViewById(R.id.start_change_wall);
                         btn.setText("No");
                         //startChangeWall.setText("No");
                     }
+                    btn.setEnabled(true);
                 }
             });
         } else {

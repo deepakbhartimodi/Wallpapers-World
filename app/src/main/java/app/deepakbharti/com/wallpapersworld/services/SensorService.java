@@ -33,6 +33,7 @@ public class SensorService extends Service {
         if (listOfFiles == null) {
             Toast.makeText(this, "Please donwload few wallpapers first.", Toast.LENGTH_SHORT).show();
         } else {
+            Toast.makeText(this, "Change Wallpaper Started...", Toast.LENGTH_SHORT).show();
             int rnd = new Random().nextInt(listOfFiles.length);
             Uri uri = Uri.fromFile(listOfFiles[rnd]);
             if (uri != null) {
@@ -52,7 +53,7 @@ public class SensorService extends Service {
 
     @Override
     public void onDestroy() {
-        Toast.makeText(this, "Service Stopped...", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Change Wallpaper Stopped...", Toast.LENGTH_SHORT).show();
     }
 
     @Nullable

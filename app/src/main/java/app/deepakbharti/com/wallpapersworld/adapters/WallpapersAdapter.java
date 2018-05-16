@@ -9,6 +9,8 @@ import android.graphics.Bitmap;
 import android.media.audiofx.Equalizer;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Message;
 import android.provider.MediaStore;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
@@ -18,6 +20,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.ImageButton;
@@ -37,6 +40,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import app.deepakbharti.com.wallpapersworld.Manifest;
 import app.deepakbharti.com.wallpapersworld.R;
@@ -85,7 +90,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         ImageView imageView;
 
         CheckBox checkBoxFav;
-        TextView setWall;
+        Button setWall;
         ImageButton buttonShare, buttonDownload;
 
         public WallpaperViewHolder(View itemView) {
@@ -105,12 +110,35 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             buttonDownload.setOnClickListener(this);
         }
 
+        Handler handler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                setWallpaper(wallpaperList.get(getAdapterPosition()));
+            }
+        };
         @Override
         public void onClick(View view) {
 
             switch (view.getId()){
                 case R.id.set_wall:
-                    setWallpaper(wallpaperList.get(getAdapterPosition()));
+                    setWall.setEnabled(false);
+                    Executor executor = Executors.newSingleThreadExecutor();
+                    executor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            long futuretime = System.currentTimeMillis();
+                            while (System.currentTimeMillis()<futuretime){
+                                synchronized (this){
+                                    try{
+                                        wait(futuretime-System.currentTimeMillis());
+                                    }catch (Exception e){
+
+                                    }
+                                }
+                            }
+                            handler.sendEmptyMessage(0);
+                        }
+                    });
                     break;
                 case R.id.button_share:
                     shareWallpaper(wallpaperList.get(getAdapterPosition()));
@@ -187,6 +215,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
                             }
                         }
                     });
+            setWall.setEnabled(true);
         }
 
         public void downloadWallpaper(final Wallpaper w){
