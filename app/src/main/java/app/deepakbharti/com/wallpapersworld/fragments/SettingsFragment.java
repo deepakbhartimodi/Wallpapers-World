@@ -1,5 +1,8 @@
 package app.deepakbharti.com.wallpapersworld.fragments;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,14 +31,24 @@ import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.Calendar;
 
 import app.deepakbharti.com.wallpapersworld.R;
+import app.deepakbharti.com.wallpapersworld.services.SensorService;
 
 public class SettingsFragment extends Fragment {
 
     private static final int GOOGLE_SIGN_IN_CODE = 212;
     private GoogleSignInClient mGoogleSignInClient;
     BottomNavigationView bottomNavigationView;
+    private DatabaseReference dbChangeWall;
+    String changeWall;
 
 
     @Nullable
@@ -48,12 +62,13 @@ public class SettingsFragment extends Fragment {
 
 
     @Override
-    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+    public void onViewCreated(final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
         GoogleSignInOptions gso =
                 new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                         .requestIdToken(getString(R.string.default_web_client_id))
+                        .requestEmail()
                         .build();
 
         mGoogleSignInClient = GoogleSignIn.getClient(getActivity(), gso);
@@ -62,6 +77,7 @@ public class SettingsFragment extends Fragment {
             ImageView imageView = view.findViewById(R.id.image_view);
             TextView textViewName = view.findViewById(R.id.username);
             TextView textViewEmail = view.findViewById(R.id.email);
+            Button startChangeWall = view.findViewById(R.id.start_change_wall);
 
             FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
@@ -82,6 +98,67 @@ public class SettingsFragment extends Fragment {
                                     .commit();
                         }
                     });
+                }
+            });
+
+            dbChangeWall = FirebaseDatabase.getInstance().getReference("users")
+                    .child(user.getUid())
+                    .child("settings")
+                    .child("change_wall_daily");
+
+            dbChangeWall.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+                    if(dataSnapshot.exists()){
+                        changeWall = dataSnapshot.getValue(String.class);
+                    }else{
+                        changeWall = "No";
+                    }
+                    Button btn = view.findViewById(R.id.start_change_wall);
+                    btn.setText(changeWall);
+                    //startChangeWall.setText(changeWall);
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+
+                }
+            });
+
+            startChangeWall.setOnClickListener(new View.OnClickListener(){
+
+                @Override
+                public void onClick(View view) {
+                    if(changeWall.equals("No")){
+                        dbChangeWall.setValue("Yes");
+                        getActivity().startService(new Intent(getActivity(), SensorService.class));
+
+                        Calendar cal = Calendar.getInstance();
+                        Intent intent = new Intent(getActivity(), SensorService.class);
+                        PendingIntent pintent = PendingIntent
+                                .getService(getActivity(), 0, intent, 0);
+
+                        AlarmManager alarm = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
+                        // Start service every hour
+                        alarm.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),
+                                216000*1000, pintent);
+                        Button btn = view.findViewById(R.id.start_change_wall);
+                        btn.setText("Yes");
+                        //startChangeWall.setText("Yes");
+                    }else{
+                        getActivity().stopService(new Intent(getActivity(), SensorService.class));
+
+                        Intent intent = new Intent(getActivity(), SensorService.class);
+                        PendingIntent pintent = PendingIntent
+                                .getService(getActivity(), 0, intent, 0);
+
+                        AlarmManager alarm = (AlarmManager)getContext().getSystemService(Context.ALARM_SERVICE);
+                        alarm.cancel(pintent);
+                        dbChangeWall.setValue("No");
+                        Button btn = view.findViewById(R.id.start_change_wall);
+                        btn.setText("No");
+                        //startChangeWall.setText("No");
+                    }
                 }
             });
         } else {

@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_highlight_off_black_24dp.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/file/ic_cloud_off_black_24dp.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,10 +28,13 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="ebebeb" />
-                            <entry key="outputName" value="ic_logout" />
+                            <entry key="assetSourceType" value="FILE" />
+                            <entry key="color" value="4d4d4d" />
+                            <entry key="height" value="209" />
+                            <entry key="outputName" value="ic_wallpapers_world" />
                             <entry key="overrideSize" value="true" />
-                            <entry key="sourceFile" value="C:\Users\Mr.Modi\Downloads\Wallpapers_world.svg" />
+                            <entry key="sourceFile" value="D:\Wallpapers_world.svg" />
+                            <entry key="width" value="383" />
                           </map>
                         </option>
                       </PersistentState>

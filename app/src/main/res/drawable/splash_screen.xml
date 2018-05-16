@@ -2,4 +2,12 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item android:drawable="@drawable/bg_splash" />
+
+    <item
+        android:id="@+id/title"
+        android:width="350dp"
+        android:height="250dp"
+        android:gravity="center_horizontal|center_vertical"
+        android:drawable="@drawable/ic_wallpapers_world"/>
+
 </layer-list>
