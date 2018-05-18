@@ -33,7 +33,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         this.categoryList = categoryList;
 
         mInterstitialAd = new InterstitialAd(mCtx);
-        mInterstitialAd.setAdUnitId("ca-app-pub-3940256099942544/1033173712");
+        mInterstitialAd.setAdUnitId("ca-app-pub-4951572640443447/7514232634 ");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
@@ -76,6 +76,8 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         public void onClick(View view) {
             if (mInterstitialAd.isLoaded()) {
                 mInterstitialAd.show();
+            }else{
+                mInterstitialAd.loadAd(new AdRequest.Builder().build());
             }
             int p = getAdapterPosition();
             Category c = categoryList.get(p);
