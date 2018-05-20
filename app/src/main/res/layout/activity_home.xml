@@ -12,6 +12,7 @@
         android:layout_height="wrap_content">
 
         <android.support.v7.widget.Toolbar
+            android:id="@+id/toolbar"
             app:title="@string/app_name"
             android:layout_gravity="top"
             app:titleTextColor="@color/colorTitle"

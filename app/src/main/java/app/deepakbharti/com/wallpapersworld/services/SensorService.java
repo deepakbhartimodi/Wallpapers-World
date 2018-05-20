@@ -30,7 +30,7 @@ public class SensorService extends Service {
         folder.mkdir();
 
         File[] listOfFiles = folder.listFiles();
-        if (listOfFiles == null) {
+        if (listOfFiles == null || listOfFiles.length == 0) {
             Toast.makeText(this, "Please donwload few wallpapers first.", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Change Wallpaper Started...", Toast.LENGTH_SHORT).show();

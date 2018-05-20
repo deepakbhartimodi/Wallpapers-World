@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <item
+        android:id="@+id/nav_app_share"
+        android:title="@string/share_application"
+        android:icon="@drawable/ic_share"
+        app:showAsAction="never"
+        android:visible="true"
+        />
+
+    <item
+        android:id="@+id/nav_show_download_wall"
+        android:title="Downloaded Wallpapers"
+        android:icon="@drawable/ic_downloaded_wallpapers"
+        app:showAsAction="never"
+        android:visible="true"
+        />
+</menu>

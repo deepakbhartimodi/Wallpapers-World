@@ -6,13 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
-import android.media.audiofx.Equalizer;
 import android.net.Uri;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
@@ -39,15 +37,12 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import app.deepakbharti.com.wallpapersworld.Manifest;
 import app.deepakbharti.com.wallpapersworld.R;
 import app.deepakbharti.com.wallpapersworld.activities.Single_wallpaper_popup;
-import app.deepakbharti.com.wallpapersworld.models.Category;
 import app.deepakbharti.com.wallpapersworld.models.Wallpaper;
 
 public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.WallpaperViewHolder> {

@@ -16,7 +16,7 @@
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
         android:layout_centerVertical="true"
-        android:text="@string/no_favourite_image_available"
+        android:text="You have 0 Downloaded Wallpapers in your Device."
         android:textAlignment="center"
         android:textSize="30sp"
         android:textStyle="bold"
