@@ -28,8 +28,7 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-        MobileAds.initialize(this,
-                "ca-app-pub-4951572640443447~3766559316");
+        MobileAds.initialize(this,"ca-app-pub-4951572640443447~3766559316");
 
         startNotificationDaily();
         bottomNavigationView = (BottomNavigationView)findViewById(R.id.bottoom_navigation);

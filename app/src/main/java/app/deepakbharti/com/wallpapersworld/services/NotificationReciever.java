@@ -25,7 +25,7 @@ public class NotificationReciever extends BroadcastReceiver {
 
         notification = new Notification.Builder(context)
                 .setContentIntent(pendingIntent)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.drawable.notification_icon)
                 .setContentText("Checkout some cool wallpapers for you smartphone.")
                 .setContentTitle("Wallpaper's World")
                 .setDefaults(Notification.DEFAULT_SOUND)

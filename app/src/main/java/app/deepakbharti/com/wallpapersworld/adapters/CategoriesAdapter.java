@@ -1,5 +1,6 @@
 package app.deepakbharti.com.wallpapersworld.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.annotation.NonNull;
@@ -33,7 +34,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
         this.categoryList = categoryList;
 
         mInterstitialAd = new InterstitialAd(mCtx);
-        mInterstitialAd.setAdUnitId("ca-app-pub-4951572640443447/7514232634 ");
+        mInterstitialAd.setAdUnitId("ca-app-pub-4951572640443447/7514232634");
         mInterstitialAd.loadAd(new AdRequest.Builder().build());
     }
 
@@ -85,6 +86,7 @@ public class CategoriesAdapter extends RecyclerView.Adapter<CategoriesAdapter.Ca
             Intent intent = new Intent(mCtx,WallpapersActivity.class);
             intent.putExtra("category",c.name);
             mCtx.startActivities(new Intent[]{intent});
+            ((Activity)mCtx).overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
         }
     }
 }

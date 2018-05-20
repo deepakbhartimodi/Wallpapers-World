@@ -39,12 +39,14 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
 import app.deepakbharti.com.wallpapersworld.Manifest;
 import app.deepakbharti.com.wallpapersworld.R;
+import app.deepakbharti.com.wallpapersworld.activities.Single_wallpaper_popup;
 import app.deepakbharti.com.wallpapersworld.models.Category;
 import app.deepakbharti.com.wallpapersworld.models.Wallpaper;
 
@@ -105,6 +107,7 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             buttonDownload = itemView.findViewById(R.id.button_download);
 
             checkBoxFav.setOnCheckedChangeListener(this);
+            imageView.setOnClickListener(this);
             setWall.setOnClickListener(this);
             buttonShare.setOnClickListener(this);
             buttonDownload.setOnClickListener(this);
@@ -120,6 +123,15 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
         public void onClick(View view) {
 
             switch (view.getId()){
+                case R.id.image_view:
+                    Intent intent = new Intent(mCtx,Single_wallpaper_popup.class);
+                    Wallpaper w = wallpaperList.get(getAdapterPosition());
+                    intent.putExtra("id",w.id);
+                    intent.putExtra("wallpaper",w.wallpaper);
+                    intent.putExtra("title",w.title);
+                    mCtx.startActivity(intent);
+                    ((Activity)mCtx).overridePendingTransition(R.anim.fade_in,R.anim.fade_out);
+                    break;
                 case R.id.set_wall:
                     setWall.setEnabled(false);
                     Executor executor = Executors.newSingleThreadExecutor();
@@ -288,4 +300,5 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
             }
         }
     }
+
 }

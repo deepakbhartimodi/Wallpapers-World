@@ -32,7 +32,16 @@
         <receiver
             android:name=".services.NotificationReciever"
             android:enabled="true"
-            android:exported="true"></receiver>
+            android:exported="true" />
+
+        <service android:name=".services.CategoryNotificationService">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+
+        <activity android:name=".activities.Single_wallpaper_popup"
+            android:theme="@style/AppTheme.CustomTheme"></activity>
     </application>
 
 </manifest>
