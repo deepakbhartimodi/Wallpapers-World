@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
@@ -41,6 +42,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import app.deepakbharti.com.wallpapersworld.Functions.UsefulFunctions;
 import app.deepakbharti.com.wallpapersworld.R;
 import app.deepakbharti.com.wallpapersworld.activities.Single_wallpaper_popup;
 import app.deepakbharti.com.wallpapersworld.models.Wallpaper;
@@ -209,16 +211,19 @@ public class WallpapersAdapter extends RecyclerView.Adapter<WallpapersAdapter.Wa
 
                             if(uri != null){
                                 WallpaperManager wallpaperManager = WallpaperManager.getInstance(mCtx);
-                                try {
-                                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(((Activity) mCtx).getContentResolver(), uri);
-                                    wallpaperManager.setBitmap(bitmap);
-                                    Toast.makeText((Activity) mCtx, "Image Successfully Set.", Toast.LENGTH_SHORT).show();
-                                } catch (IOException e) {
-                                    // TODO Auto-generated catch block
-                                    e.printStackTrace();
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                    File wallFile = new File(uri.getPath());
+                                    Uri contentURI = UsefulFunctions.getImageContentUri(mCtx, wallFile);
+                                    try {
+                                        mCtx.startActivity(wallpaperManager.getCropAndSetWallpaperIntent(contentURI));
+                                    }catch (Exception e){
+                                    }
+                                } else {
+                                    try {
+                                        wallpaperManager.setStream(mCtx.getContentResolver().openInputStream(uri));
+                                    } catch (Exception e) {
+                                    }
                                 }
-                                //intent.setDataAndType(uri,"image/*");
-                                //mCtx.startActivity(Intent.createChooser(intent,"Wallpapers World"));
                             }
                         }
                     });

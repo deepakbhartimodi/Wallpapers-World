@@ -2,10 +2,13 @@ package app.deepakbharti.com.wallpapersworld.adapters;
 
 import android.app.Activity;
 import android.app.WallpaperManager;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
 import android.provider.MediaStore;
@@ -31,6 +34,7 @@ import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
+import app.deepakbharti.com.wallpapersworld.Functions.UsefulFunctions;
 import app.deepakbharti.com.wallpapersworld.R;
 import app.deepakbharti.com.wallpapersworld.activities.Single_wallpaper_popup;
 import app.deepakbharti.com.wallpapersworld.models.Wallpaper;
@@ -131,7 +135,7 @@ public class DownloadedWallpapersAdapter extends RecyclerView.Adapter<Downloaded
             }
         }
 
-        public void setWallpaper(final Wallpaper w){
+        private void setWallpaper(final Wallpaper w){
             ((Activity) mCtx).findViewById(R.id.progressbar).setVisibility(View.VISIBLE);
 
             Glide.with(mCtx)
@@ -147,12 +151,18 @@ public class DownloadedWallpapersAdapter extends RecyclerView.Adapter<Downloaded
 
                             if(uri != null){
                                 WallpaperManager wallpaperManager = WallpaperManager.getInstance(mCtx);
-                                try {
-                                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(((Activity) mCtx).getContentResolver(), uri);
-                                    wallpaperManager.setBitmap(bitmap);
-                                    Toast.makeText((Activity) mCtx, "Image Successfully Set.", Toast.LENGTH_SHORT).show();
-                                } catch (IOException e) {
-                                    e.printStackTrace();
+                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                                    File wallFile = new File(uri.getPath());
+                                    Uri contentURI = UsefulFunctions.getImageContentUri(mCtx, wallFile);
+                                    try {
+                                        mCtx.startActivity(wallpaperManager.getCropAndSetWallpaperIntent(contentURI));
+                                    }catch (Exception e){
+                                    }
+                                } else {
+                                    try {
+                                        wallpaperManager.setStream(mCtx.getContentResolver().openInputStream(uri));
+                                    } catch (Exception e) {
+                                    }
                                 }
                             }
                         }
@@ -160,7 +170,32 @@ public class DownloadedWallpapersAdapter extends RecyclerView.Adapter<Downloaded
             setWall.setEnabled(true);
         }
 
-        public boolean deleteWallpaper(final Wallpaper w){
+        /*private Uri getImageContentUri(Context context, File imageFile) {
+            String filePath = imageFile.getAbsolutePath();
+            Cursor cursor = context.getContentResolver().query(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    new String[] { MediaStore.Images.Media._ID },
+                    MediaStore.Images.Media.DATA + "=? ",
+                    new String[] { filePath }, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                int id = cursor.getInt(cursor
+                        .getColumnIndex(MediaStore.MediaColumns._ID));
+                Uri baseUri = Uri.parse("content://media/external/images/media");
+                return Uri.withAppendedPath(baseUri, "" + id);
+            } else {
+                if (imageFile.exists()) {
+                    ContentValues values = new ContentValues();
+                    values.put(MediaStore.Images.Media.DATA, filePath);
+                    return context.getContentResolver().insert(
+                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
+                } else {
+                    return null;
+                }
+            }
+        }*/
+
+        private boolean deleteWallpaper(final Wallpaper w){
             boolean flag = false;
             Uri uri = Uri.parse(w.wallpaper);
             File file = new File(uri.getPath());
@@ -176,7 +211,7 @@ public class DownloadedWallpapersAdapter extends RecyclerView.Adapter<Downloaded
             return flag;
         }
 
-        public void removeAt(int position) {
+        private void removeAt(int position) {
             wallpaperList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, wallpaperList.size());
