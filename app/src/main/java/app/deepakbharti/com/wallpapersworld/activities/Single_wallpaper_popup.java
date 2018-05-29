@@ -1,17 +1,14 @@
 package app.deepakbharti.com.wallpapersworld.activities;
 
 import android.app.Activity;
-import android.app.WallpaperManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
@@ -22,7 +19,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
@@ -35,7 +31,6 @@ import java.io.IOException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import app.deepakbharti.com.wallpapersworld.Functions.UsefulFunctions;
 import app.deepakbharti.com.wallpapersworld.R;
 import app.deepakbharti.com.wallpapersworld.models.Wallpaper;
 
@@ -123,20 +118,10 @@ public class Single_wallpaper_popup extends AppCompatActivity {
                         Uri uri = saveWallpaperAndGetUri(resource,w.id);
 
                         if(uri != null){
-                            WallpaperManager wallpaperManager = WallpaperManager.getInstance(mCtx);
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                File wallFile = new File(uri.getPath());
-                                Uri contentURI = UsefulFunctions.getImageContentUri(mCtx, wallFile);
-                                try {
-                                    mCtx.startActivity(wallpaperManager.getCropAndSetWallpaperIntent(contentURI));
-                                }catch (Exception e){
-                                }
-                            } else {
-                                try {
-                                    wallpaperManager.setStream(mCtx.getContentResolver().openInputStream(uri));
-                                } catch (Exception e) {
-                                }
-                            }
+                            Intent i = new Intent(Intent.ACTION_ATTACH_DATA);
+                            i.setDataAndType(uri, "image/*");
+                            i.putExtra("mimeType", "image/*");
+                            ((Activity) mCtx).startActivityForResult(Intent.createChooser(i,"Set as:"),200);
                         }
                     }
                 });

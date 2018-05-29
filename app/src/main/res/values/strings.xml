@@ -6,11 +6,12 @@
     <string name="nav_settings">Settings</string>
     <string name="not_signed_in">Oops! You have to sign in first...</string>
     <string name="logout">Logout</string>
-    <string name="set_as_wallpaper">Set as Wallpaper</string>
+    <string name="set_as_wallpaper">Set Wallpaper</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="change_wallpaper_daily">Change wallpaper daily ?</string>
     <string name="share_application">Share Application</string>
     <string name="no_favourite_image_available">No Favourite image available..</string>
+    <string name="downloaded_wallpapers">Downloaded Wallpapers</string>
 </resources>

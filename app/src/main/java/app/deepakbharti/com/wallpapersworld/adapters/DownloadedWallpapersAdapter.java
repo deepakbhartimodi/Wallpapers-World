@@ -1,17 +1,12 @@
 package app.deepakbharti.com.wallpapersworld.adapters;
 
 import android.app.Activity;
-import android.app.WallpaperManager;
-import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.os.Build;
 import android.os.Handler;
 import android.os.Message;
-import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +16,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
@@ -29,12 +23,10 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 
-import app.deepakbharti.com.wallpapersworld.Functions.UsefulFunctions;
 import app.deepakbharti.com.wallpapersworld.R;
 import app.deepakbharti.com.wallpapersworld.activities.Single_wallpaper_popup;
 import app.deepakbharti.com.wallpapersworld.models.Wallpaper;
@@ -150,50 +142,15 @@ public class DownloadedWallpapersAdapter extends RecyclerView.Adapter<Downloaded
                             Uri uri = Uri.parse(w.wallpaper);
 
                             if(uri != null){
-                                WallpaperManager wallpaperManager = WallpaperManager.getInstance(mCtx);
-                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-                                    File wallFile = new File(uri.getPath());
-                                    Uri contentURI = UsefulFunctions.getImageContentUri(mCtx, wallFile);
-                                    try {
-                                        mCtx.startActivity(wallpaperManager.getCropAndSetWallpaperIntent(contentURI));
-                                    }catch (Exception e){
-                                    }
-                                } else {
-                                    try {
-                                        wallpaperManager.setStream(mCtx.getContentResolver().openInputStream(uri));
-                                    } catch (Exception e) {
-                                    }
-                                }
+                                Intent i = new Intent(Intent.ACTION_ATTACH_DATA);
+                                i.setDataAndType(uri, "image/*");
+                                i.putExtra("mimeType", "image/*");
+                                ((Activity) mCtx).startActivityForResult(Intent.createChooser(i,"Set as:"),200);
                             }
                         }
                     });
             setWall.setEnabled(true);
         }
-
-        /*private Uri getImageContentUri(Context context, File imageFile) {
-            String filePath = imageFile.getAbsolutePath();
-            Cursor cursor = context.getContentResolver().query(
-                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-                    new String[] { MediaStore.Images.Media._ID },
-                    MediaStore.Images.Media.DATA + "=? ",
-                    new String[] { filePath }, null);
-
-            if (cursor != null && cursor.moveToFirst()) {
-                int id = cursor.getInt(cursor
-                        .getColumnIndex(MediaStore.MediaColumns._ID));
-                Uri baseUri = Uri.parse("content://media/external/images/media");
-                return Uri.withAppendedPath(baseUri, "" + id);
-            } else {
-                if (imageFile.exists()) {
-                    ContentValues values = new ContentValues();
-                    values.put(MediaStore.Images.Media.DATA, filePath);
-                    return context.getContentResolver().insert(
-                            MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-                } else {
-                    return null;
-                }
-            }
-        }*/
 
         private boolean deleteWallpaper(final Wallpaper w){
             boolean flag = false;

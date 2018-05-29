@@ -41,8 +41,10 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".activities.Single_wallpaper_popup"
-            android:theme="@style/AppTheme.CustomTheme"></activity>
+        <activity
+            android:name=".activities.Single_wallpaper_popup"
+            android:theme="@style/AppTheme.CustomTheme" />
+
     </application>
 
 </manifest>
